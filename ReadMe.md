@@ -1,0 +1,3 @@
+Disparador Whatsapp
+Projeto para envio de mensagem pélo whatsapp usando selenium com python
+essa ferramenta usa python 3 e não funciona no windows 7, testei apenas no windows 10...
