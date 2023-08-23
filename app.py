@@ -24,19 +24,21 @@ def fSair():
     navegador.close()
     sys.exit()
     
-    
+
+arquivo = 'Texto e Lista de contatos.xlsx'    
+
 
 #Criar validador de usuário do disparo, pegando o nome do PC
-df_usuário = pd.read_excel('Texto e Lista de contatos.xlsm', sheet_name='Config', usecols="A", engine='openpyxl')
+df_usuário = pd.read_excel(arquivo, sheet_name='Config', usecols="A", engine='openpyxl')
 nomeUsuario = df_usuário.loc[0, 'definicoes']
 usuarioPCatual = os.getlogin() #Nome do Usuario/PC
 
 if nomeUsuario == 'vazio':
     #Adicionar nome de usuário ao Excel
-    excel = load_workbook('Texto e Lista de contatos.xlsm')
+    excel = load_workbook(arquivo)
     config = excel['Config']
     config['A2'].value = usuarioPCatual
-    excel.save('Texto e Lista de contatos.xlsm')
+    excel.save(arquivo)
 elif nomeUsuario != usuarioPCatual: #Se o usuario não estover vazio e for diferente do nome existente Finalizar programa
     messagebox.showinfo('Ação inválida', 
     'Esse PC não tem permissão para usar este programa. Para mais esclarecimetos entre em contato com o desenvolvedor (84) 98808-3657')
@@ -45,15 +47,15 @@ elif nomeUsuario != usuarioPCatual: #Se o usuario não estover vazio e for difer
 print('\nPermissão de usuário: CONCEDIDA')
 
 #Lendo opções de envio
-df_opcoes = pd.read_excel('Texto e Lista de contatos.xlsm', sheet_name='Configurações', usecols="B:C", engine='openpyxl', header=None)
+df_opcoes = pd.read_excel(arquivo, sheet_name='Configurações', usecols="B:C", engine='openpyxl', header=None)
 aguardar = int(df_opcoes.loc[1,2])
 enviarImagem = True if str(df_opcoes.loc[0,2]).lower() == "sim" else False
 
 #Lendo contatos
-df_contatos = pd.read_excel('Texto e Lista de contatos.xlsm', sheet_name='Lista Contatos', usecols="A:C", engine='openpyxl')
+df_contatos = pd.read_excel(arquivo, sheet_name='Lista Contatos', usecols="A:C", engine='openpyxl')
 
 #Lendo Mensagem e transformando em String
-df_mensagem = pd.read_excel('Texto e Lista de contatos.xlsm', sheet_name='Texto', usecols="A", engine='openpyxl')
+df_mensagem = pd.read_excel(arquivo, sheet_name='Texto', usecols="A", engine='openpyxl')
 mensagem = str(df_mensagem.loc[0, 'Escreva o texto no campo abaixo']) #Pegando primeira linha da coluna 'Escrev o texto...'
 print('Leitura do arquivo de contato e texto: Ok')
 
