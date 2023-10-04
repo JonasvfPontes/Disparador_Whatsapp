@@ -41,6 +41,12 @@ def fProxy(ativar):
     '''Se "ativar = True então ProxyEnable = 1
        Se "ativar = False então ProxyEnable = 0'''
     
+    if not os.path.exists(r'C:\automacao\AtivarEtapaProxy.txt'):
+        # Se o arquivo não existir, crie-o
+        with open(r"C:\automacao\AtivarEtapaProxy.txt", "w") as arquivo:
+            arquivo.write('sim')
+
+    
     if not os.path.exists(r"C:\automacao\proxy0-Whatsapp.vbs"):
         # Se o arquivo não existir, crie-o
         with open(r"C:\automacao\proxy0-Whatsapp.vbs", "w") as arquivo:
@@ -58,16 +64,24 @@ def fProxy(ativar):
             arquivo.write('oShell.RegWrite "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ProxyEnable", 1, "REG_DWORD"\n\n')
             arquivo.write('Set oShell = Nothing\n\n')
             arquivo.write("'Ativa o proxy")
-
-    if ativar:
-        # Execute o arquivo .bat
-        # Caminho para o arquivo .vbs que você deseja executar
-        caminho_arquivo_vbs = r'C:\automacao\proxy1-Whatsapp.vbs'
-    else:
-        caminho_arquivo_vbs = r'C:\automacao\proxy0-Whatsapp.vbs'
     
-    # Execute o arquivo .vbs
-    subprocess.run(['wscript.exe', caminho_arquivo_vbs], capture_output=True, text=True)
+    #Verificar se arquivo .txt está configurado como "sim"
+    with open(r"C:\automacao\AtivarEtapaProxy.txt", "r") as arquivo:
+        ativarEtapa = arquivo.read()
+
+    if ativarEtapa.lower() == 'sim':        
+        if ativar:
+            # Execute o arquivo .bat
+            # Caminho para o arquivo .vbs que você deseja executar
+            caminho_arquivo_vbs = r'C:\automacao\proxy1-Whatsapp.vbs'
+            print('Proxy = Ativo')
+        else:
+            caminho_arquivo_vbs = r'C:\automacao\proxy0-Whatsapp.vbs'
+            print('Proxy = Desativado')
+        # Execute o arquivo .vbs
+        subprocess.run(['wscript.exe', caminho_arquivo_vbs], capture_output=True, text=True)
+    else:
+        print('Etapa Proxy foi ignorada')
 
 
 def fSair():
@@ -89,3 +103,4 @@ def mrkDiretory():
     diretorio2 = os.path.abspath('.\\Imagens')
     if not os.path.exists(diretorio2):
         os.makedirs(diretorio2)
+

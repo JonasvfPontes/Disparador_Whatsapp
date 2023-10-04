@@ -50,24 +50,23 @@ mensagem = str(df_mensagem.loc[0, 'Escreva o texto no campo abaixo']) #Pegando p
 print('Leitura do arquivo de contato e texto: Ok')
 
 #Criando Objeto Navegador
-print('Proxy = Desativado')
 funcoes.fProxy(False) #Dasativando Proxy
 print('Verificando atualizações do WebDriver')
 try:
     servico = Service(ChromeDriverManager().install()) #Executando Serviço de atualização do WebDriver
-    navegador = webdriver.Chrome(service=servico) #Criando objeto
-    print('\nCriação do Objeto: Ok')
     funcoes.fProxy(True) #Ativando Proxy
-    print('Proxy = Ativo')
-    navegador.get('https://web.whatsapp.com/')
+    
 except Exception as e:
     funcoes.fProxy(True)
-    print('Proxy = Ativo')
+    
     exc_type, exc_obj, exc_tb = sys.exc_info()
     linha_erro = exc_tb.tb_lineno
-    mensagem_erro = f"Erro na linha {linha_erro}:\nNome do erro: {e}"
+    print(f"Erro na linha {linha_erro}:\nNome do erro: {e}")
     funcoes.fSair()
 
+navegador = webdriver.Chrome(service=servico) #Criando objeto
+navegador.get('https://web.whatsapp.com/')
+print('\nCriação do Objeto: Ok')
 #Abrindo e aguardando login no WhatsApp
 try:
     while len(navegador.find_elements(By.ID, 'side')) < 1:
